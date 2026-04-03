@@ -1,16 +1,37 @@
-:root {
-    --bg-dark: #b8ff4d;
+:root, [data-theme="light"] {
+    --bg-color: #f1f5f9;
     --primary: #ff4df2;
     --primary-hover: #ff00ec;
     --secondary: #4da6ff;
+    --accent: #ffcc00;
     --text-main: #000000;
-    --text-muted: #111111;
-    --glass-bg: #ffffff;
+    --text-muted: #333333;
+    --glass-bg: rgba(255, 255, 255, 0.4);
     --glass-border: #000000;
-    --input-bg: #ffffff;
+    --input-bg: rgba(255, 255, 255, 0.6);
     --error: #ff3300;
     --border-radius: 12px;
     --box-shadow: 6px 6px 0px #000000;
+    --shadow-color: #000000;
+    --bg-base: #b8ff4d;
+}
+
+[data-theme="dark"] {
+    --bg-color: #0f172a;
+    --primary: #b8ff4d;
+    --primary-hover: #9df028;
+    --secondary: #ff4df2;
+    --accent: #4da6ff;
+    --text-main: #ffffff;
+    --text-muted: #cbd5e1;
+    --glass-bg: rgba(30, 41, 59, 0.4);
+    --glass-border: #ffffff;
+    --input-bg: rgba(15, 23, 42, 0.6);
+    --error: #ff4444;
+    --border-radius: 12px;
+    --box-shadow: 6px 6px 0px #ffffff;
+    --shadow-color: #ffffff;
+    --bg-base: #0f172a;
 }
 
 * {
@@ -21,7 +42,8 @@
 }
 
 body {
-    background-color: var(--bg-dark);
+    background-color: var(--bg-color);
+    transition: background-color 0.5s ease;
     color: var(--text-main);
     min-height: 100vh;
     display: flex;
@@ -37,6 +59,17 @@ body {
     inset: 0;
     z-index: 0;
     overflow: hidden;
+    background-color: var(--bg-base);
+    transition: background-color 0.5s ease;
+}
+
+.animated-background::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(80px);
+    -webkit-backdrop-filter: blur(80px);
+    z-index: 1;
 }
 
 .blob {
@@ -73,7 +106,7 @@ body {
     left: 60%;
     width: 200px;
     height: 200px;
-    background: #ffcc00;
+    background: var(--accent);
     animation-delay: -5s;
     animation-duration: 15s;
     transform: rotate(45deg);
@@ -100,6 +133,8 @@ body {
 /* Brutalist Card */
 .glass-card {
     background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 4px solid var(--glass-border);
     border-radius: var(--border-radius);
     padding: 48px 40px;
@@ -133,8 +168,8 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 28px;
-    box-shadow: 4px 4px 0px #000;
-    color: #000;
+    box-shadow: 4px 4px 0px var(--shadow-color);
+    color: var(--shadow-color);
     transform: rotate(-10deg);
 }
 
@@ -190,12 +225,12 @@ input {
     font-size: 16px;
     font-weight: 700;
     outline: none;
-    box-shadow: 4px 4px 0px #000;
+    box-shadow: 4px 4px 0px var(--shadow-color);
     transition: all 0.2s ease;
 }
 
 input:focus {
-    border-color: #000;
+    border-color: var(--primary);
     box-shadow: 6px 6px 0px var(--primary);
     transform: translate(-2px, -2px);
 }
@@ -209,7 +244,7 @@ input:focus+.input-icon {
     width: 100%;
     padding: 16px;
     background: var(--primary);
-    border: 3px solid #000;
+    border: 3px solid var(--glass-border);
     border-radius: var(--border-radius);
     color: #000;
     font-size: 18px;
@@ -218,7 +253,7 @@ input:focus+.input-icon {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    box-shadow: 4px 4px 0px #000;
+    box-shadow: 4px 4px 0px var(--shadow-color);
     transition: all 0.15s;
     display: flex;
     justify-content: center;
@@ -228,13 +263,13 @@ input:focus+.input-icon {
 
 .submit-btn:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #000;
+    box-shadow: 6px 6px 0px var(--shadow-color);
     background: var(--primary-hover);
 }
 
 .submit-btn:active {
     transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px var(--shadow-color);
 }
 
 .submit-btn.loading .btn-text {
@@ -260,6 +295,39 @@ input:focus+.input-icon {
     to {
         transform: rotate(360deg);
     }
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--border-radius);
+    background: var(--glass-bg);
+    border: 3px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px var(--shadow-color);
+    transition: all 0.2s ease;
+    z-index: 100;
+}
+
+.theme-toggle-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--shadow-color);
+    background: var(--input-bg);
+}
+
+.theme-toggle-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--shadow-color);
 }
 
 .error-message {
@@ -322,10 +390,10 @@ input:focus+.input-icon {
 
 .logout-btn {
     margin-top: 24px;
-    background: #fff;
-    border: 3px solid #000;
-    box-shadow: 3px 3px 0px #000;
-    color: #000;
+    background: var(--input-bg);
+    border: 3px solid var(--glass-border);
+    box-shadow: 3px 3px 0px var(--shadow-color);
+    color: var(--text-main);
     font-weight: 800;
     text-transform: uppercase;
     padding: 10px 24px;
@@ -336,14 +404,14 @@ input:focus+.input-icon {
 }
 
 .logout-btn:hover {
-    background: #e0e0e0;
+    background: var(--glass-bg);
     transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0px #000;
+    box-shadow: 5px 5px 0px var(--shadow-color);
 }
 
 .logout-btn:active {
     transform: translate(3px, 3px);
-    box-shadow: 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px var(--shadow-color);
 }
 
 /* Toggle Links */
@@ -382,7 +450,7 @@ input:focus+.input-icon {
 .divider::before, .divider::after {
     content: '';
     flex: 1;
-    border-bottom: 3px solid #000;
+    border-bottom: 3px solid var(--glass-border);
 }
 .divider span {
     padding: 0 10px;
@@ -393,16 +461,16 @@ input:focus+.input-icon {
 .social-btn {
     width: 100%;
     padding: 14px;
-    background: #fff;
-    border: 3px solid #000;
+    background: var(--input-bg);
+    border: 3px solid var(--glass-border);
     border-radius: var(--border-radius);
-    color: #000;
+    color: var(--text-main);
     font-size: 16px;
     font-weight: 800;
     text-transform: uppercase;
     cursor: pointer;
     position: relative;
-    box-shadow: 4px 4px 0px #000;
+    box-shadow: 4px 4px 0px var(--shadow-color);
     transition: all 0.15s;
     display: flex;
     justify-content: center;
@@ -411,12 +479,12 @@ input:focus+.input-icon {
 }
 .social-btn:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #000;
-    background: #f4f4f4;
+    box-shadow: 6px 6px 0px var(--shadow-color);
+    background: var(--glass-bg);
 }
 .social-btn:active {
     transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px var(--shadow-color);
 }
 .social-icon {
     width: 24px;
