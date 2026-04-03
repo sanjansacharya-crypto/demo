@@ -29,25 +29,17 @@
   </div>
 
   <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
-    <svg id="owl-sleeping" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-      <path d="M19 14.25A4.75 4.75 0 0 0 14.25 9.5H9.75A4.75 4.75 0 0 0 5 14.25v2.5h14v-2.5z"/>
-      <path d="M12 21.5c-4 0-7-3-7-7"/>
-      <path d="M19 14.5c0 4-3 7-7 7"/>
-      <path d="M8 14h2"/>
-      <path d="M14 14h2"/>
-      <path d="M12 16.5v2"/>
-      <path d="M6 9.5l-2-2"/>
-      <path d="M18 9.5l2-2"/>
+    <svg id="owl-sleeping" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="owl-icon" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+      <path d="M12 21a9 9 0 0 1-9-9V7l4-2 2 2h6l2-2 4 2v5a9 9 0 0 1-9 9z"></path>
+      <path d="M6.5 11.5 Q8.5 13.5 10.5 11.5"></path>
+      <path d="M13.5 11.5 Q15.5 13.5 17.5 11.5"></path>
+      <polygon points="12,16 10.5,13 13.5,13" fill="currentColor" stroke="none"></polygon>
     </svg>
-    <svg id="owl-awake" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M19 14.25A4.75 4.75 0 0 0 14.25 9.5H9.75A4.75 4.75 0 0 0 5 14.25v2.5h14v-2.5z"/>
-      <path d="M12 21.5c-4 0-7-3-7-7"/>
-      <path d="M19 14.5c0 4-3 7-7 7"/>
-      <circle cx="9" cy="14" r="1.5"/>
-      <circle cx="15" cy="14" r="1.5"/>
-      <path d="M12 16.5v2"/>
-      <path d="M6 9.5l-2-2"/>
-      <path d="M18 9.5l2-2"/>
+    <svg id="owl-awake" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="owl-icon" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 21a9 9 0 0 1-9-9V7l4-2 2 2h6l2-2 4 2v5a9 9 0 0 1-9 9z"></path>
+      <circle cx="8.5" cy="11.5" r="2"></circle>
+      <circle cx="15.5" cy="11.5" r="2"></circle>
+      <polygon points="12,16 10.5,13 13.5,13" fill="currentColor" stroke="none"></polygon>
     </svg>
   </button>
 
@@ -263,14 +255,6 @@
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       updateThemeIcons(newTheme);
-    });
-
-    // 3D Tilt interactive effect
-    document.addEventListener('mousemove', (e) => {
-      const x = (window.innerWidth / 2 - e.pageX) / 40;
-      const y = (window.innerHeight / 2 - e.pageY) / -40;
-      document.documentElement.style.setProperty('--rotateX', `${y}deg`);
-      document.documentElement.style.setProperty('--rotateY', `${x}deg`);
     });
 
     document.addEventListener('DOMContentLoaded', () => {

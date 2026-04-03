@@ -138,9 +138,17 @@ body {
     width: 100%;
     max-width: 440px;
     padding: 20px;
-    transform: perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
-    transform-style: preserve-3d;
-    transition: transform 0.1s ease-out;
+}
+
+.owl-icon {
+    filter: drop-shadow(2px 3px 2px var(--shadow-color)) drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.4));
+    transform: perspective(200px) rotateY(-10deg) rotateX(10deg);
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-btn:hover .owl-icon {
+    transform: perspective(200px) rotateY(-15deg) rotateX(15deg) scale(1.1);
+    filter: drop-shadow(4px 5px 3px var(--shadow-color)) drop-shadow(-2px -2px 2px rgba(255, 255, 255, 0.5));
 }
 
 /* Brutalist Card */
