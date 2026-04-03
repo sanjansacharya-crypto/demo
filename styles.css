@@ -63,6 +63,16 @@ body {
     transition: background-color 0.5s ease;
 }
 
+.animated-background::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 0%, var(--bg-color) 85%);
+    z-index: 2;
+    pointer-events: none;
+    transition: background 0.5s ease;
+}
+
 .animated-background::after {
     content: '';
     position: absolute;
@@ -128,6 +138,9 @@ body {
     width: 100%;
     max-width: 440px;
     padding: 20px;
+    transform: perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
 }
 
 /* Brutalist Card */
@@ -237,6 +250,7 @@ input:focus {
 
 input:focus+.input-icon {
     color: var(--primary);
+    transform: scale(1.15) translateY(-2px) rotate(5deg);
 }
 
 /* Button */
