@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="animated-background">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="container">
+    <!-- Login Form Container -->
+    <div id="login-container" class="glass-card active">
+      <div class="brand">
+        <div class="logo-icon">✦</div>
+        <h2>Welcome Back</h2>
+        <p>Please enter your details to sign in</p>
+      </div>
+
+      <form id="login-form">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <div class="input-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <input type="email" id="email" placeholder="Enter your email" required autocomplete="email">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+        </div>
+
+        <div class="error-message" id="error-message">
+          Invalid credentials. Please try again.
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <span class="btn-text">Sign In</span>
+          <div class="spinner"></div>
+        </button>
+
+        <div class="toggle-text">
+          Don't have an account? <span class="toggle-link" id="show-signup">Sign Up</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Signup Form Container -->
+    <div id="signup-container" class="glass-card">
+      <div class="brand">
+        <div class="logo-icon">✦</div>
+        <h2>Create Account</h2>
+        <p>Join us to get started</p>
+      </div>
+
+      <form id="signup-form">
+        <div class="input-group">
+          <label for="signup-email">Email</label>
+          <div class="input-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <input type="email" id="signup-email" placeholder="Enter your email" required autocomplete="email">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="signup-password">Password</label>
+          <div class="input-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <input type="password" id="signup-password" placeholder="••••••••" required autocomplete="new-password">
+          </div>
+        </div>
+
+        <div class="error-message" id="signup-error-message">
+          Signup failed. Please try again.
+        </div>
+
+        <button type="submit" class="submit-btn" id="signup-submit-btn">
+          <span class="btn-text">Sign Up</span>
+          <div class="spinner"></div>
+        </button>
+
+        <div class="toggle-text">
+          Already have an account? <span class="toggle-link" id="show-login">Sign In</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Verification Container -->
+    <div id="verification-container" class="glass-card">
+      <div class="success-content">
+        <div class="success-icon" style="background: rgba(139, 92, 246, 0.2); color: var(--primary);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </div>
+        <h2>Verify your email</h2>
+        <p id="verification-message">We have sent you a verification email to [user email]. Please verify it and log in</p>
+        <button class="submit-btn" id="verify-login-btn" style="margin-top: 16px;">
+          <span class="btn-text">Log In</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Logged In Success Container -->
+    <div id="success-container" class="glass-card">
+      <div class="success-content">
+        <div class="success-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h2>Hi, I am in!</h2>
+        <p>Welcome to your dashboard. You have successfully authenticated.</p>
+        <button class="logout-btn" id="logout-btn">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyC_EQleUr1_SnXGU7LFoBWPgw14cCop1Ng",
+      authDomain: "login-35e23.firebaseapp.com",
+      projectId: "login-35e23",
+      storageBucket: "login-35e23.firebasestorage.app",
+      messagingSenderId: "662226193773",
+      appId: "1:662226193773:web:1f8303cf97c5c194c21e64"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('login-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const errorMessage = document.getElementById('error-message');
+      const loginContainer = document.getElementById('login-container');
+      const successContainer = document.getElementById('success-container');
+      const logoutBtn = document.getElementById('logout-btn');
+
+      const signupContainer = document.getElementById('signup-container');
+      const signupForm = document.getElementById('signup-form');
+      const signupSubmitBtn = document.getElementById('signup-submit-btn');
+      const signupErrorMessage = document.getElementById('signup-error-message');
+
+      const showSignupBtn = document.getElementById('show-signup');
+      const showLoginBtn = document.getElementById('show-login');
+
+      const verificationContainer = document.getElementById('verification-container');
+      const verificationMessage = document.getElementById('verification-message');
+      const verifyLoginBtn = document.getElementById('verify-login-btn');
+
+      verifyLoginBtn.addEventListener('click', () => {
+        verificationContainer.classList.remove('active');
+        setTimeout(() => {
+          loginContainer.classList.add('active');
+        }, 300);
+      });
+
+      // View toggles
+      showSignupBtn.addEventListener('click', () => {
+        loginContainer.classList.remove('active');
+        setTimeout(() => {
+          signupContainer.classList.add('active');
+        }, 300);
+      });
+
+      showLoginBtn.addEventListener('click', () => {
+        signupContainer.classList.remove('active');
+        setTimeout(() => {
+          loginContainer.classList.add('active');
+        }, 300);
+      });
+
+      // Handle signup submission
+      signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        signupErrorMessage.style.display = 'none';
+        signupSubmitBtn.classList.add('loading');
+        signupSubmitBtn.disabled = true;
+
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          await sendEmailVerification(userCredential.user);
+          await signOut(auth);
+
+          signupSubmitBtn.classList.remove('loading');
+          signupSubmitBtn.disabled = false;
+
+          verificationMessage.textContent = `We have sent you a verification email to ${email}. Please verify it and log in`;
+
+          signupContainer.classList.remove('active');
+
+          setTimeout(() => {
+            verificationContainer.classList.add('active');
+          }, 300);
+
+        } catch (error) {
+          signupSubmitBtn.classList.remove('loading');
+          signupSubmitBtn.disabled = false;
+
+          signupErrorMessage.textContent = error.message.replace('Firebase: ', '') || 'Signup failed. Please try again.';
+          signupErrorMessage.style.display = 'block';
+        }
+      });
+
+      // Handle form submission
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Hide previous errors
+        errorMessage.style.display = 'none';
+
+        // Add loading state
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+          // Attempt to sign in with Firebase
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+          if (!userCredential.user.emailVerified) {
+            await signOut(auth);
+            
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+            
+            verificationMessage.textContent = `We have sent you a verification email to ${email}. Please verify it and log in`;
+            
+            loginContainer.classList.remove('active');
+            setTimeout(() => {
+              verificationContainer.classList.add('active');
+            }, 300);
+            return;
+          }
+
+          // Remove loading state
+          submitBtn.classList.remove('loading');
+          submitBtn.disabled = false;
+
+          // Success - switch views
+          loginContainer.classList.remove('active');
+
+          // Small delay for smooth transition
+          setTimeout(() => {
+            successContainer.classList.add('active');
+          }, 300);
+
+        } catch (error) {
+          // Remove loading state
+          submitBtn.classList.remove('loading');
+          submitBtn.disabled = false;
+
+          // Show error message from Firebase
+          errorMessage.textContent = error.message.replace('Firebase: ', '') || 'Invalid credentials. Please try again.';
+          errorMessage.style.display = 'block';
+        }
+      });
+
+      // Handle logout
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          // Sign out from Firebase
+          await signOut(auth);
+
+          // Switch back to login view
+          successContainer.classList.remove('active');
+
+          // Clear form
+          loginForm.reset();
+
+          setTimeout(() => {
+            loginContainer.classList.add('active');
+          }, 300);
+        } catch (error) {
+          console.error("Error signing out:", error);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
