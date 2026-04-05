@@ -18,6 +18,8 @@
     --blob-1: #dbeafe;
     --blob-2: #f3e8ff;
     --blob-3: #e0e7ff;
+    --mouse-x: 0;
+    --mouse-y: 0;
 }
 
 [data-theme="dark"] {
@@ -132,10 +134,10 @@ body {
 
 @keyframes floating {
     0% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
+        transform: translate(calc(var(--mouse-x) * 5px), calc(var(--mouse-y) * 5px)) rotate(0deg) scale(1);
     }
     100% {
-        transform: translate(40px, 60px) rotate(25deg) scale(1.1);
+        transform: translate(calc(var(--mouse-x) * 5px + 40px), calc(var(--mouse-y) * 5px + 60px)) rotate(25deg) scale(1.1);
     }
 }
 
@@ -160,12 +162,17 @@ body {
     width: 100%;
     height: 35vh;
     fill: var(--text-main);
+    transition: transform 0.1s ease-out;
+}
+
+.infrastructure-layer svg.layer-1 {
+    transform: translateX(calc(var(--mouse-x) * -15px));
 }
 
 .infrastructure-layer svg.layer-2 {
     height: 45vh;
     opacity: 0.5;
-    transform: scaleX(-1);
+    transform: scaleX(-1) translateX(calc(var(--mouse-x) * 10px));
 }
 
 .perspective-grid {
@@ -177,11 +184,29 @@ body {
         linear-gradient(to right, var(--text-main) 1px, transparent 1px),
         linear-gradient(to bottom, var(--text-main) 1px, transparent 1px);
     background-size: 50px 50px;
-    transform: perspective(600px) rotateX(75deg) translateY(100px) scale(3);
+    transform: perspective(600px) rotateX(75deg) translateY(100px) scale(3) 
+               translateX(calc(var(--mouse-x) * -5px));
     transform-origin: bottom center;
     opacity: 0.3;
     mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
     -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+    transition: transform 0.1s ease-out;
+}
+
+.perspective-grid::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, var(--primary), transparent);
+    background-size: 100% 200px;
+    animation: dataStream 4s linear infinite;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+@keyframes dataStream {
+    0% { background-position: 0 -200px; }
+    100% { background-position: 0 100%; }
 }
 
 /* Layout Strategy */
@@ -384,7 +409,12 @@ input {
 input:focus {
     border-color: var(--primary);
     background: var(--glass-bg);
-    box-shadow: 0 0 0 2px var(--shadow-color);
+    box-shadow: 0 0 20px var(--shadow-color);
+}
+
+.glass-card:has(input:focus) {
+    box-shadow: 0 0 40px var(--shadow-color), var(--box-shadow);
+    border-color: var(--primary);
 }
 
 input:focus+.input-icon {
@@ -634,4 +664,78 @@ input:focus+.input-icon {
 .social-icon {
     width: 24px;
     height: 24px;
+}
+
+/* System Status Terminal */
+.status-terminal {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    width: 280px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px;
+    color: var(--primary);
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+[data-theme="light"] .status-terminal {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.terminal-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 4px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.terminal-logs {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 80px;
+    overflow: hidden;
+}
+
+.log-entry {
+    animation: fadeIn 0.3s ease-out;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.log-entry::before {
+    content: '> ';
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo Animation */
+.logo-icon {
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.glass-card:hover .logo-icon {
+    transform: rotate(180deg) scale(1.1);
+}
+
+@media (max-width: 900px) {
+    .status-terminal {
+        display: none;
+    }
 }

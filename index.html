@@ -28,6 +28,17 @@
     <div class="blob blob-3"></div>
   </div>
 
+  <div class="status-terminal">
+    <div class="terminal-header">
+      <span>System Status</span>
+      <span id="terminal-time">00:00:00</span>
+    </div>
+    <div id="terminal-logs" class="terminal-logs">
+      <div class="log-entry">Initializing network...</div>
+      <div class="log-entry">Encryption active...</div>
+    </div>
+  </div>
+
   <div class="infrastructure-layer">
     <div class="perspective-grid"></div>
     <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 1000 200" class="cityscape-svg layer-2">
@@ -286,6 +297,50 @@
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       updateThemeIcons(newTheme);
+    });
+
+    // Parallax & Mock Logs Logic
+    const terminalLogs = document.getElementById('terminal-logs');
+    const terminalTime = document.getElementById('terminal-time');
+    
+    const mockLogs = [
+      "Node: Global-East connected",
+      "Handshake: SHA-384 verified",
+      "Traffic: 1.2 GB/s stabilized",
+      "Latency: 8.4ms detected",
+      "Security: Layer-7 active",
+      "Uptime: 99.998% current",
+      "Gateway: IPFS bridge ready",
+      "Protocol: P2P Mesh enabled"
+    ];
+
+    function addLog() {
+      const log = mockLogs[Math.floor(Math.random() * mockLogs.length)];
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      entry.textContent = log;
+      terminalLogs.appendChild(entry);
+      if (terminalLogs.children.length > 4) {
+        terminalLogs.removeChild(terminalLogs.children[0]);
+      }
+    }
+
+    setInterval(addLog, 4000);
+
+    function updateTime() {
+      const now = new Date();
+      terminalTime.textContent = now.toTimeString().split(' ')[0];
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Mouse Parallax
+    window.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth) - 0.5;
+      const y = (e.clientY / window.innerHeight) - 0.5;
+      
+      document.documentElement.style.setProperty('--mouse-x', x);
+      document.documentElement.style.setProperty('--mouse-y', y);
     });
 
     document.addEventListener('DOMContentLoaded', () => {
