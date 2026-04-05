@@ -29,17 +29,19 @@
   </div>
 
   <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
-    <svg id="owl-sleeping" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="owl-icon" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-      <path d="M12 21a9 9 0 0 1-9-9V7l4-2 2 2h6l2-2 4 2v5a9 9 0 0 1-9 9z"></path>
-      <path d="M6.5 11.5 Q8.5 13.5 10.5 11.5"></path>
-      <path d="M13.5 11.5 Q15.5 13.5 17.5 11.5"></path>
-      <polygon points="12,16 10.5,13 13.5,13" fill="currentColor" stroke="none"></polygon>
+    <svg id="bat-sleeping" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="bat-icon" style="display: none;">
+      <path d="M9.5 0 L10 2 M10.5 0 L11 2 M13 0 L13 2 M14.5 0 L14 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <path d="M10 2 C10 4 7 8 7 14 C7 17 9 19 12 20 C15 19 17 17 17 14 C17 8 14 4 14 2 Z" fill="currentColor" />
+      <path d="M7 14 C9 15 11 18 12 20 M17 14 C15 15 13 18 12 20" stroke="var(--bg-color)" stroke-width="1.2" fill="none" />
+      <path d="M10 19 L8 23 L11.5 20.5 Z M14 19 L16 23 L12.5 20.5 Z" fill="currentColor" />
+      <path d="M9.5 17.5 L11 17.5 M13 17.5 L14.5 17.5" stroke="var(--bg-color)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <path d="M11.5 19.5 L11.5 20.5 M12.5 19.5 L12.5 20.5" stroke="var(--bg-color)" stroke-width="0.8" fill="none"/>
     </svg>
-    <svg id="owl-awake" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="owl-icon" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 21a9 9 0 0 1-9-9V7l4-2 2 2h6l2-2 4 2v5a9 9 0 0 1-9 9z"></path>
-      <circle cx="8.5" cy="11.5" r="2"></circle>
-      <circle cx="15.5" cy="11.5" r="2"></circle>
-      <polygon points="12,16 10.5,13 13.5,13" fill="currentColor" stroke="none"></polygon>
+    <svg id="bat-awake" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="bat-icon">
+      <path d="M12 6 L10.5 4 L9 6.5 C6 5 2 7 0 10 C1 11.5 3.5 11.5 5 11 C5.5 13 7 14.5 8 14.5 C9 14.5 10 13.5 10 12 C10 15 11 18 12 20 C13 18 14 15 14 12 C14 13.5 15 14.5 16 14.5 C17 14.5 18.5 13 19 11 C20.5 11.5 23 11.5 24 10 C22 7 18 5 15 6.5 L13.5 4 L12 6 Z" fill="currentColor"/>
+      <circle cx="10.5" cy="8.5" r="1" fill="var(--primary)" />
+      <circle cx="13.5" cy="8.5" r="1" fill="var(--primary)" />
+      <path d="M11.5 10.5 L12 11 L12.5 10.5" stroke="var(--primary)" fill="none" stroke-width="0.5" stroke-linecap="round"/>
     </svg>
   </button>
 
@@ -232,16 +234,16 @@
 
     // Theme Toggle Logic
     const themeToggleBtn = document.getElementById('theme-toggle');
-    const owlSleeping = document.getElementById('owl-sleeping');
-    const owlAwake = document.getElementById('owl-awake');
-    
+    const batSleeping = document.getElementById('bat-sleeping');
+    const batAwake = document.getElementById('bat-awake');
+
     function updateThemeIcons(theme) {
       if (theme === 'dark') {
-        owlAwake.style.display = 'block';
-        owlSleeping.style.display = 'none';
+        batAwake.style.display = 'block';
+        batSleeping.style.display = 'none';
       } else {
-        owlAwake.style.display = 'none';
-        owlSleeping.style.display = 'block';
+        batAwake.style.display = 'none';
+        batSleeping.style.display = 'block';
       }
     }
 
@@ -251,7 +253,7 @@
     themeToggleBtn.addEventListener('click', () => {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      
+
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       updateThemeIcons(newTheme);
@@ -431,6 +433,54 @@
 
       googleLoginBtns.forEach(btn => btn.addEventListener('click', handleGoogleLogin));
     });
+
+    // Detect if scrolled down beyond limit to reload
+    let accumulatedOverscroll = 0;
+
+    // For Desktop (Mouse Wheel)
+    window.addEventListener('wheel', (e) => {
+      // Check if we are at the bottom of the page
+      const isAtBottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight;
+
+      // e.deltaY > 0 means scrolling downwards
+      if (isAtBottom && e.deltaY > 0) {
+        accumulatedOverscroll += e.deltaY;
+        // If we overscroll by 150px, reload
+        if (accumulatedOverscroll > 150) {
+          location.reload();
+        }
+      } else {
+        accumulatedOverscroll = 0;
+      }
+    }, { passive: true });
+
+    // For Mobile (Touch Drag)
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      const currentY = e.touches[0].clientY;
+      const deltaY = touchStartY - currentY; // positive delta implies swiping up / scrolling down
+
+      const isAtBottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight;
+
+      if (isAtBottom && deltaY > 0) {
+        accumulatedOverscroll += deltaY;
+        touchStartY = currentY;
+        if (accumulatedOverscroll > 150) {
+          location.reload();
+        }
+      } else {
+        accumulatedOverscroll = 0;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      accumulatedOverscroll = 0;
+    });
+
   </script>
 </body>
 
