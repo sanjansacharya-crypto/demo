@@ -55,7 +55,25 @@
     </svg>
   </button>
 
-  <div class="container">
+  <main class="main-layout">
+    <div class="info-side">
+      <div class="info-content">
+        <h1>Next-Gen<br>Infrastructure</h1>
+        <p>Deploy, manage, and scale your decentralized services securely with our blazing-fast global network layer.</p>
+        <div class="stats-container">
+           <div class="stat-item">
+             <div class="stat-value">99.99%</div>
+             <div class="stat-label">Uptime SLA</div>
+           </div>
+           <div class="stat-item">
+             <div class="stat-value">< 10ms</div>
+             <div class="stat-label">Global Latency</div>
+           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
     <!-- Login Form Container -->
     <div id="login-container" class="glass-card active">
       <div class="brand">
@@ -223,6 +241,7 @@
       </div>
     </div>
   </div>
+  </main>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
