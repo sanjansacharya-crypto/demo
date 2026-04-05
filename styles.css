@@ -1,37 +1,45 @@
 :root, [data-theme="light"] {
-    --bg-color: #f1f5f9;
-    --primary: #ff4df2;
-    --primary-hover: #ff00ec;
-    --secondary: #4da6ff;
-    --accent: #ffcc00;
-    --text-main: #000000;
-    --text-muted: #333333;
+    --bg-color: #f3f4f6;
+    --primary: #111827;
+    --primary-hover: #374151;
+    --text-primary-btn: #ffffff;
+    --secondary: #6b7280;
+    --accent: #4b5563;
+    --text-main: #111827;
+    --text-muted: #6b7280;
     --glass-bg: rgba(255, 255, 255, 0.4);
-    --glass-border: #000000;
+    --glass-border: rgba(255, 255, 255, 0.8);
     --input-bg: rgba(255, 255, 255, 0.6);
-    --error: #ff3300;
+    --error: #ef4444;
     --border-radius: 12px;
-    --box-shadow: 6px 6px 0px #000000;
-    --shadow-color: #000000;
-    --bg-base: #b8ff4d;
+    --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --bg-base: #e5e7eb;
+    --blob-1: #dbeafe;
+    --blob-2: #f3e8ff;
+    --blob-3: #e0e7ff;
 }
 
 [data-theme="dark"] {
-    --bg-color: #0f172a;
-    --primary: #b8ff4d;
-    --primary-hover: #9df028;
-    --secondary: #ff4df2;
-    --accent: #4da6ff;
-    --text-main: #ffffff;
-    --text-muted: #cbd5e1;
-    --glass-bg: rgba(30, 41, 59, 0.4);
-    --glass-border: #ffffff;
-    --input-bg: rgba(15, 23, 42, 0.6);
-    --error: #ff4444;
+    --bg-color: #050505;
+    --primary: #ffffff;
+    --primary-hover: #e5e7eb;
+    --text-primary-btn: #000000;
+    --secondary: #4b5563;
+    --accent: #374151;
+    --text-main: #f9fafb;
+    --text-muted: #9ca3af;
+    --glass-bg: rgba(20, 20, 25, 0.3);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --input-bg: rgba(30, 30, 35, 0.5);
+    --error: #f87171;
     --border-radius: 12px;
-    --box-shadow: 6px 6px 0px #ffffff;
-    --shadow-color: #ffffff;
-    --bg-base: #0f172a;
+    --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --bg-base: #000000;
+    --blob-1: #0f172a;
+    --blob-2: #1e1b4b;
+    --blob-3: #2e1065;
 }
 
 * {
@@ -86,9 +94,8 @@ body {
 .blob {
     position: absolute;
     border-radius: 12px;
-    border: 4px solid #000;
-    opacity: 1;
-    box-shadow: 8px 8px 0px #000;
+    opacity: 0.8;
+    filter: blur(40px);
     animation: floating 8s infinite ease-in-out alternate;
 }
 
@@ -97,7 +104,7 @@ body {
     left: 5%;
     width: 300px;
     height: 300px;
-    background: var(--primary);
+    background: var(--blob-1);
     animation-delay: 0s;
 }
 
@@ -106,7 +113,7 @@ body {
     right: 5%;
     width: 250px;
     height: 250px;
-    background: var(--secondary);
+    background: var(--blob-2);
     animation-delay: -3s;
     animation-duration: 12s;
     border-radius: 50%;
@@ -117,7 +124,7 @@ body {
     left: 60%;
     width: 200px;
     height: 200px;
-    background: var(--accent);
+    background: var(--blob-3);
     animation-delay: -5s;
     animation-duration: 15s;
     transform: rotate(45deg);
@@ -142,14 +149,11 @@ body {
 }
 
 .bat-icon {
-    filter: drop-shadow(2px 3px 2px var(--shadow-color)) drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.4));
-    transform: perspective(200px) rotateY(-10deg) rotateX(10deg);
-    transition: all 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .theme-toggle-btn:hover .bat-icon {
-    transform: perspective(200px) rotateY(-15deg) rotateX(15deg) scale(1.1);
-    filter: drop-shadow(4px 5px 3px var(--shadow-color)) drop-shadow(-2px -2px 2px rgba(255, 255, 255, 0.5));
+    transform: scale(1.1);
 }
 
 /* Brutalist Card */
@@ -157,7 +161,7 @@ body {
     background: var(--glass-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 4px solid var(--glass-border);
+    border: 1px solid var(--glass-border);
     border-radius: var(--border-radius);
     padding: 48px 40px;
     box-shadow: var(--box-shadow);
@@ -184,15 +188,13 @@ body {
     height: 64px;
     margin: 0 auto 16px;
     background: var(--primary);
-    border: 3px solid #000;
     border-radius: var(--border-radius);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 28px;
-    box-shadow: 4px 4px 0px var(--shadow-color);
-    color: var(--shadow-color);
-    transform: rotate(-10deg);
+    box-shadow: var(--box-shadow);
+    color: var(--text-primary-btn);
 }
 
 h2 {
@@ -240,26 +242,25 @@ label {
 input {
     width: 100%;
     background: var(--input-bg);
-    border: 3px solid var(--glass-border);
+    border: 1px solid var(--glass-border);
     border-radius: var(--border-radius);
     padding: 14px 16px 14px 48px;
     color: var(--text-main);
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 500;
     outline: none;
-    box-shadow: 4px 4px 0px var(--shadow-color);
     transition: all 0.2s ease;
 }
 
 input:focus {
     border-color: var(--primary);
-    box-shadow: 6px 6px 0px var(--primary);
-    transform: translate(-2px, -2px);
+    background: var(--glass-bg);
+    box-shadow: 0 0 0 2px var(--shadow-color);
 }
 
 input:focus+.input-icon {
     color: var(--primary);
-    transform: scale(1.15) translateY(-2px) rotate(5deg);
+    transform: translateY(-1px);
 }
 
 /* Button */
@@ -267,17 +268,17 @@ input:focus+.input-icon {
     width: 100%;
     padding: 16px;
     background: var(--primary);
-    border: 3px solid var(--glass-border);
+    border: none;
     border-radius: var(--border-radius);
-    color: #000;
-    font-size: 18px;
-    font-weight: 800;
+    color: var(--text-primary-btn);
+    font-size: 16px;
+    font-weight: 700;
     text-transform: uppercase;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    box-shadow: 4px 4px 0px var(--shadow-color);
-    transition: all 0.15s;
+    box-shadow: var(--box-shadow);
+    transition: all 0.2s ease;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -285,14 +286,14 @@ input:focus+.input-icon {
 }
 
 .submit-btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px var(--shadow-color);
+    transform: translateY(-2px);
     background: var(--primary-hover);
+    box-shadow: 0 12px 24px var(--shadow-color);
 }
 
 .submit-btn:active {
-    transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0px var(--shadow-color);
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 .submit-btn.loading .btn-text {
@@ -327,30 +328,23 @@ input:focus+.input-icon {
     right: 24px;
     width: 48px;
     height: 48px;
-    border-radius: var(--border-radius);
-    background: var(--glass-bg);
-    border: 3px solid var(--glass-border);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: transparent;
+    border: none;
     color: var(--text-main);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 4px 4px 0px var(--shadow-color);
-    transition: all 0.2s ease;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 100;
 }
 
 .theme-toggle-btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px var(--shadow-color);
-    background: var(--input-bg);
+    transform: scale(1.05);
 }
 
 .theme-toggle-btn:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px var(--shadow-color);
+    transform: scale(0.95);
 }
 
 .error-message {
@@ -383,11 +377,10 @@ input:focus+.input-icon {
 .success-icon {
     width: 80px;
     height: 80px;
-    background: var(--secondary) !important;
-    color: #000 !important;
-    border: 4px solid #000;
+    background: var(--primary) !important;
+    color: var(--text-primary-btn) !important;
     border-radius: var(--border-radius);
-    box-shadow: 6px 6px 0px #000;
+    box-shadow: var(--box-shadow);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -396,7 +389,7 @@ input:focus+.input-icon {
 }
 
 .success-icon svg {
-    color: #000 !important;
+    color: var(--text-primary-btn) !important;
 }
 
 @keyframes scaleIn {
@@ -406,35 +399,35 @@ input:focus+.input-icon {
 
 .success-content h2 {
     font-size: 32px;
-    font-weight: 900;
-    color: #000;
+    font-weight: 800;
+    color: var(--text-main);
     text-transform: uppercase;
 }
 
 .logout-btn {
     margin-top: 24px;
     background: var(--input-bg);
-    border: 3px solid var(--glass-border);
-    box-shadow: 3px 3px 0px var(--shadow-color);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--box-shadow);
     color: var(--text-main);
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     padding: 10px 24px;
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: all 0.2s;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .logout-btn:hover {
     background: var(--glass-bg);
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0px var(--shadow-color);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px var(--shadow-color);
 }
 
 .logout-btn:active {
-    transform: translate(3px, 3px);
-    box-shadow: 0px 0px 0px var(--shadow-color);
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 /* Toggle Links */
@@ -473,7 +466,7 @@ input:focus+.input-icon {
 .divider::before, .divider::after {
     content: '';
     flex: 1;
-    border-bottom: 3px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
 }
 .divider span {
     padding: 0 10px;
@@ -485,29 +478,29 @@ input:focus+.input-icon {
     width: 100%;
     padding: 14px;
     background: var(--input-bg);
-    border: 3px solid var(--glass-border);
+    border: 1px solid var(--glass-border);
     border-radius: var(--border-radius);
     color: var(--text-main);
     font-size: 16px;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     cursor: pointer;
     position: relative;
-    box-shadow: 4px 4px 0px var(--shadow-color);
-    transition: all 0.15s;
+    box-shadow: var(--box-shadow);
+    transition: all 0.2s ease;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 12px;
 }
 .social-btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px var(--shadow-color);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px var(--shadow-color);
     background: var(--glass-bg);
 }
 .social-btn:active {
-    transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0px var(--shadow-color);
+    transform: translateY(0);
+    box-shadow: none;
 }
 .social-icon {
     width: 24px;
