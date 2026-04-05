@@ -139,6 +139,51 @@ body {
     }
 }
 
+/* Infrastructure Graphics */
+.infrastructure-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 2; /* Below container, above blobs */
+    pointer-events: none;
+    opacity: 0.04;
+    overflow: hidden;
+}
+
+[data-theme="light"] .infrastructure-layer {
+    opacity: 0.08;
+}
+
+.infrastructure-layer svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35vh;
+    fill: var(--text-main);
+}
+
+.infrastructure-layer svg.layer-2 {
+    height: 45vh;
+    opacity: 0.5;
+    transform: scaleX(-1);
+}
+
+.perspective-grid {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50vh;
+    background-image: 
+        linear-gradient(to right, var(--text-main) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--text-main) 1px, transparent 1px);
+    background-size: 50px 50px;
+    transform: perspective(600px) rotateX(75deg) translateY(100px) scale(3);
+    transform-origin: bottom center;
+    opacity: 0.3;
+    mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+}
+
 /* Container */
 .container {
     position: relative;
