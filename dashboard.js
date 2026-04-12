@@ -51,18 +51,7 @@ onAuthStateChanged(auth, (user) => {
 async function initDashboard() {
     setupEventListeners();
     
-    // Ensure storage bucket exists
-    try {
-        const { data, error } = await supabase.storage.createBucket('inventory-images', {
-            public: true,
-            fileSizeLimit: 1024 * 1024 * 2, // 2MB
-            allowedMimeTypes: ['image/png', 'image/jpeg', 'image/jpg']
-        });
-    } catch (err) {
-        // Bucket might already exist
-        console.log("Bucket check completed");
-    }
-
+    // Storage bucket check removed - assumed to be handled by user manually
     await refreshAllData();
 }
 
@@ -145,6 +134,23 @@ async function refreshAllData() {
         // Fetch Inventory
         const { data: inv, error: invErr } = await supabase.from('inventory').select('*').order('name');
         if (invErr) throw invErr;
+
+        // Generate Signed URLs for private images
+        const paths = inv.filter(i => i.image_url && !i.image_url.startsWith('http')).map(i => i.image_url);
+        
+        if (paths.length > 0) {
+            const { data: signedData, error: signedErr } = await supabase.storage
+                .from('app-files')
+                .createSignedUrls(paths, 3600); // 1 hour expiry
+            
+            if (!signedErr) {
+                inv.forEach(item => {
+                    const match = signedData.find(s => s.path === item.image_url);
+                    if (match) item.display_url = match.signedUrl;
+                });
+            }
+        }
+
         inventoryData = inv;
 
         // Fetch Requests
@@ -177,8 +183,11 @@ function renderCatalogue(data, container) {
     container.innerHTML = data.map(item => `
         <div class="inventory-card">
             <div class="card-image">
-                ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}">` : `<span style="font-size: 3rem; opacity: 0.2;">🧬</span>`}
+                ${(item.display_url || item.image_url) ? `<img src="${item.display_url || item.image_url}" alt="${item.name}">` : `<span style="font-size: 3rem; opacity: 0.2;">🧬</span>`}
                 <span class="card-badge">${item.available_quantity > 0 ? 'INSTOCK' : 'OUT OF STOCK'}</span>
+                <button class="card-delete-btn" onclick="handleDeleteItem('${item.id}', '${item.image_url}')" title="Delete Item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                </button>
             </div>
             <div class="card-content">
                 <h3 style="margin-bottom: 4px;">${item.name}</h3>
@@ -238,34 +247,32 @@ async function handleAddItem(e) {
         const desc = document.getElementById('comp-desc').value;
         const file = document.getElementById('comp-image').files[0];
 
-        let imageUrl = null;
+        // 1. Generate Predictable IDs for the path
+        const itemId = crypto.randomUUID();
+        const fileId = crypto.randomUUID();
+        const uid = auth.currentUser.uid;
+        let storagePath = null;
 
         if (file) {
             const fileExt = file.name.split('.').pop();
-            const fileName = `${Math.random()}.${fileExt}`;
-            const filePath = `items/${fileName}`;
+            storagePath = `${uid}/inventory/${itemId}/${fileId}.${fileExt}`;
 
             const { error: uploadError } = await supabase.storage
-                .from('inventory-images')
-                .upload(filePath, file);
+                .from('app-files')
+                .upload(storagePath, file);
 
             if (uploadError) throw uploadError;
-
-            const { data: { publicUrl } } = supabase.storage
-                .from('inventory-images')
-                .getPublicUrl(filePath);
-            
-            imageUrl = publicUrl;
         }
 
-        // Insert Item
+        // 2. Insert Item with the relative path
         const { data: newItem, error } = await supabase.from('inventory').insert([{
+            id: itemId,
             name,
             total_quantity: total,
             available_quantity: total,
             min_borrow_quantity: minBorrow,
             description: desc,
-            image_url: imageUrl
+            image_url: storagePath // Saving path, not URL
         }]).select().single();
 
         if (error) throw error;
@@ -314,5 +321,39 @@ window.handleRequestAction = async (id, status) => {
         await refreshAllData();
     } catch (err) {
         alert("Action failed: " + err.message);
+    }
+};
+
+// Deletion Logic
+window.handleDeleteItem = async (id, path) => {
+    if (!confirm("Are you sure you want to delete this item? This will remove all associated records and files.")) return;
+
+    try {
+        // 1. Delete from Storage if path exists
+        if (path && !path.startsWith('http')) {
+            const { error: storageErr } = await supabase.storage
+                .from('app-files')
+                .remove([path]);
+            if (storageErr) console.warn("Storage deletion failed:", storageErr);
+        }
+
+        // 2. Delete from Database
+        const { error: dbErr } = await supabase.from('inventory')
+            .delete()
+            .eq('id', id);
+        
+        if (dbErr) throw dbErr;
+
+        // 3. Log the action
+        await supabase.from('audit_logs').insert([{
+            table_name: 'inventory',
+            record_id: id,
+            action: 'DELETE',
+            performed_by: auth.currentUser?.email
+        }]);
+
+        await refreshAllData();
+    } catch (err) {
+        alert("Delete failed: " + err.message);
     }
 };

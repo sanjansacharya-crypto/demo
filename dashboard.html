@@ -278,6 +278,39 @@
             position: relative;
         }
 
+        .card-delete-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 50, 50, 0.1);
+            border: 1px solid rgba(255, 50, 50, 0.2);
+            border-radius: 8px;
+            color: #ff3232;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            opacity: 0;
+            backdrop-filter: blur(4px);
+        }
+
+        .inventory-card:hover .card-delete-btn {
+            opacity: 1;
+        }
+
+        .card-delete-btn:hover {
+            background: #ff3232;
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 50, 50, 0.4);
+        }
+
+        .card-delete-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
         /* Sub-view Toggles */
         .toggle-group {
             display: flex;
