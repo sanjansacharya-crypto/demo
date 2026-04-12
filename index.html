@@ -484,8 +484,8 @@
 
           // Small delay for smooth transition
           setTimeout(() => {
-            successContainer.classList.add('active');
-          }, 300);
+            window.location.href = 'dashboard.html';
+          }, 800);
 
         } catch (error) {
           // Remove loading state
@@ -528,8 +528,8 @@
           loginContainer.classList.remove('active');
           signupContainer.classList.remove('active');
           setTimeout(() => {
-            successContainer.classList.add('active');
-          }, 300);
+            window.location.href = 'dashboard.html';
+          }, 800);
         } catch (error) {
           errorMessage.textContent = error.message.replace('Firebase: ', '') || 'Google sign-in failed.';
           errorMessage.style.display = 'block';

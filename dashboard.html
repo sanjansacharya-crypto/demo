@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard | Lab Inventory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Dashboard Specific Overrides */
+        :root {
+            --sidebar-width: 280px;
+        }
+
+        body {
+            overflow: hidden; /* Control scroll within content area */
+            display: flex;
+            height: 100vh;
+            background: var(--bg-color);
+        }
+
+        .dashboard-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(20, 20, 25, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 3rem;
+            padding: 0 10px;
+        }
+
+        .sidebar-logo {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-color);
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            font-weight: bold;
+            color: black;
+            box-shadow: 0 0 15px var(--accent-light);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+            background: rgba(163, 255, 0, 0.1);
+            border-color: rgba(163, 255, 0, 0.2);
+            box-shadow: inset 0 0 15px rgba(163, 255, 0, 0.05);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem 3rem;
+            position: relative;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .view-section {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Inventory Grid */
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .inventory-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .inventory-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .card-image {
+            height: 180px;
+            background: rgba(0, 0, 0, 0.2);
+            display: grid;
+            place-items: center;
+            position: relative;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            color: var(--accent-light);
+        }
+
+        .stock-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .stock-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .stock-progress {
+            height: 100%;
+            background: var(--accent-color);
+            width: 70%;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        /* Requests Table */
+        .requests-container {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .request-row {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 2fr 1.5fr;
+            padding: 1.25rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            align-items: center;
+        }
+
+        .request-header {
+            background: rgba(255, 255, 255, 0.03);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: none;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-accept { background: rgba(163, 255, 0, 0.15); color: var(--accent-color); }
+        .btn-reject { background: rgba(255, 50, 50, 0.15); color: #ff3232; }
+
+        .btn-accept:hover { background: var(--accent-color); color: black; }
+        .btn-reject:hover { background: #ff3232; color: white; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            place-items: center;
+        }
+
+        .modal.active { display: grid; }
+
+        .modal-content {
+            background: #1a1a20;
+            width: 500px;
+            padding: 2.5rem;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        /* Utility */
+        .accent-text { color: var(--accent-color); }
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-logo">L</div>
+                <h2 style="font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px;">LAB DASH</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a class="nav-item active" data-view="catalogue">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="10"></rect><rect x="3" y="14" width="7" height="10"></rect></svg>
+                    <span>Lab Catalogue</span>
+                </a>
+                <a class="nav-item" data-view="requests">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>Student Requests</span>
+                </a>
+                <a class="nav-item" data-view="alerts">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <span>Stock Alerts</span>
+                </a>
+                <a class="nav-item" data-view="tracking">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>Return Tracking</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="nav-item" style="width: 100%; text-align: left; background: none; border: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Sign Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-info">
+                    <h1 id="view-title">Lab Catalogue</h1>
+                    <p id="view-subtitle" class="text-secondary">Manage and track laboratory equipment in real-time.</p>
+                </div>
+                <div class="header-actions">
+                    <button id="add-item-btn" class="submit-btn" style="padding: 10px 24px;">
+                        <span>+ Add New Inventory</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Catalogue View -->
+            <section id="view-catalogue" class="view-section active">
+                <div id="inventory-list" class="inventory-grid">
+                    <!-- Cards will be injected here -->
+                    <div class="empty-state">Loading your lab catalogue...</div>
+                </div>
+            </section>
+
+            <!-- Requests View -->
+            <section id="view-requests" class="view-section">
+                <div class="requests-container">
+                    <div class="request-row request-header">
+                        <div>Student</div>
+                        <div>Component</div>
+                        <div>Qty</div>
+                        <div>Purpose</div>
+                        <div>Actions</div>
+                    </div>
+                    <div id="requests-list">
+                        <!-- Rows injected here -->
+                        <div class="empty-state">No pending requests.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alerts View -->
+            <section id="view-alerts" class="view-section">
+                <div class="inventory-grid" id="alerts-list">
+                    <!-- Cards injected here -->
+                </div>
+            </section>
+
+            <!-- Tracking View -->
+            <section id="view-tracking" class="view-section">
+                <h3 style="margin-bottom: 1.5rem;">Defaulters (Overdue)</h3>
+                <div class="requests-container" id="defaulters-list" style="margin-bottom: 3rem; border-color: rgba(255, 50, 50, 0.3);">
+                    <!-- Rows injected here -->
+                    <div class="empty-state">No defaulters found. Good job!</div>
+                </div>
+
+                <h3 style="margin-bottom: 1.5rem;">Active Borrowings</h3>
+                <div class="requests-container" id="borrowings-list">
+                    <!-- Rows injected here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div id="add-item-modal" class="modal">
+        <div class="modal-content glass-card">
+            <h2>Add New Component</h2>
+            <form id="add-item-form" style="margin-top: 1.5rem;">
+                <div class="input-group">
+                    <label>Component Name</label>
+                    <input type="text" id="comp-name" required placeholder="e.g. Raspberry Pi 4">
+                </div>
+                <div class="input-group">
+                    <label>Total Quantity</label>
+                    <input type="number" id="comp-total" required min="1">
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea id="comp-desc" rows="3" placeholder="Describe the item..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Image Upload</label>
+                    <input type="file" id="comp-image" accept="image/*">
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="social-btn" id="close-modal" style="flex: 1;">Cancel</button>
+                    <button type="submit" class="submit-btn" id="save-item" style="flex: 2;">Save Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="dashboard.js"></script>
+</body>
+</html>
