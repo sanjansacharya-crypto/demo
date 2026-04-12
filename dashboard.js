@@ -258,16 +258,26 @@ async function handleAddItem(e) {
             imageUrl = publicUrl;
         }
 
-        const { error } = await supabase.from('inventory').insert([{
+        // Insert Item
+        const { data: newItem, error } = await supabase.from('inventory').insert([{
             name,
             total_quantity: total,
             available_quantity: total,
             min_borrow_quantity: minBorrow,
             description: desc,
             image_url: imageUrl
-        }]);
+        }]).select().single();
 
         if (error) throw error;
+
+        // Log the action (Audit)
+        await supabase.from('audit_logs').insert([{
+            table_name: 'inventory',
+            record_id: newItem.id,
+            action: 'CREATE',
+            new_data: newItem,
+            performed_by: auth.currentUser.email
+        }]);
 
         addItemForm.reset();
         switchSubView('list');
@@ -284,11 +294,23 @@ async function handleAddItem(e) {
 // Global scope expose for onclick
 window.handleRequestAction = async (id, status) => {
     try {
-        const { error } = await supabase.from('requests')
+        const { data: updatedReq, error } = await supabase.from('requests')
             .update({ status })
-            .eq('id', id);
+            .eq('id', id)
+            .select()
+            .single();
         
         if (error) throw error;
+
+        // Log the action (Audit)
+        await supabase.from('audit_logs').insert([{
+            table_name: 'requests',
+            record_id: id,
+            action: `STATUS_CHANGE_${status.toUpperCase()}`,
+            new_data: updatedReq,
+            performed_by: auth.currentUser?.email || 'System'
+        }]);
+
         await refreshAllData();
     } catch (err) {
         alert("Action failed: " + err.message);
