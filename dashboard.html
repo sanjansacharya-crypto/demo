@@ -278,6 +278,47 @@
             position: relative;
         }
 
+        /* Sub-view Toggles */
+        .toggle-group {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toggle-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            background: var(--accent-color);
+            color: black;
+            box-shadow: 0 4px 15px rgba(163, 255, 0, 0.3);
+        }
+
+        .sub-view {
+            display: none;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .sub-view.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         /* Utility */
         .accent-text { color: var(--accent-color); }
         .empty-state {
@@ -331,17 +372,57 @@
                     <p id="view-subtitle" class="text-secondary">Manage and track laboratory equipment in real-time.</p>
                 </div>
                 <div class="header-actions">
-                    <button id="add-item-btn" class="submit-btn" style="padding: 10px 24px;">
-                        <span>+ Add New Inventory</span>
-                    </button>
+                    <div class="toggle-group" id="catalogue-toggle">
+                        <button class="toggle-btn active" data-subview="list">List View</button>
+                        <button class="toggle-btn" data-subview="add">+ Add New</button>
+                    </div>
                 </div>
             </header>
 
             <!-- Catalogue View -->
             <section id="view-catalogue" class="view-section active">
-                <div id="inventory-list" class="inventory-grid">
-                    <!-- Cards will be injected here -->
-                    <div class="empty-state">Loading your lab catalogue...</div>
+                <!-- Sub-view: List -->
+                <div id="subview-list" class="sub-view active">
+                    <div id="inventory-list" class="inventory-grid">
+                        <div class="empty-state">Loading your lab catalogue...</div>
+                    </div>
+                </div>
+
+                <!-- Sub-view: Add Item -->
+                <div id="subview-add" class="sub-view">
+                    <div class="glass-card" style="max-width: 600px; margin: 0 auto; display: block; opacity: 1; transform: none;">
+                        <h2 class="accent-text">Register New Component</h2>
+                        <form id="add-item-form" style="margin-top: 1.5rem;">
+                            <div class="input-group">
+                                <label>Component Name</label>
+                                <input type="text" id="comp-name" required placeholder="e.g. Raspberry Pi 4">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div class="input-group">
+                                    <label>Stock Quantity</label>
+                                    <input type="number" id="comp-total" required min="1" placeholder="0">
+                                </div>
+                                <div class="input-group">
+                                    <label>Min Borrow Limit</label>
+                                    <input type="number" id="comp-min-borrow" required min="1" value="1">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>Short Description</label>
+                                <textarea id="comp-desc" rows="3" placeholder="Briefly describe the item..."></textarea>
+                            </div>
+                            <div class="input-group">
+                                <label>Component Photo</label>
+                                <input type="file" id="comp-image" accept="image/*">
+                            </div>
+                            <div style="margin-top: 2rem;">
+                                <button type="submit" class="submit-btn" id="save-item">
+                                    <span class="btn-text">Add to Inventory</span>
+                                    <div class="spinner"></div>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </section>
 
@@ -385,34 +466,6 @@
         </main>
     </div>
 
-    <!-- Add Item Modal -->
-    <div id="add-item-modal" class="modal">
-        <div class="modal-content glass-card">
-            <h2>Add New Component</h2>
-            <form id="add-item-form" style="margin-top: 1.5rem;">
-                <div class="input-group">
-                    <label>Component Name</label>
-                    <input type="text" id="comp-name" required placeholder="e.g. Raspberry Pi 4">
-                </div>
-                <div class="input-group">
-                    <label>Total Quantity</label>
-                    <input type="number" id="comp-total" required min="1">
-                </div>
-                <div class="input-group">
-                    <label>Description</label>
-                    <textarea id="comp-desc" rows="3" placeholder="Describe the item..."></textarea>
-                </div>
-                <div class="input-group">
-                    <label>Image Upload</label>
-                    <input type="file" id="comp-image" accept="image/*">
-                </div>
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="button" class="social-btn" id="close-modal" style="flex: 1;">Cancel</button>
-                    <button type="submit" class="submit-btn" id="save-item" style="flex: 2;">Save Item</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Scripts -->
     <script type="module" src="dashboard.js"></script>

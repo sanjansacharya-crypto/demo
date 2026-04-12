@@ -31,9 +31,9 @@ const alertsList = document.getElementById('alerts-list');
 const defaultersList = document.getElementById('defaulters-list');
 const borrowingsList = document.getElementById('borrowings-list');
 
-const addItemModal = document.getElementById('add-item-modal');
-const addItemBtn = document.getElementById('add-item-btn');
-const closeModalBtn = document.getElementById('close-modal');
+const catalogueToggle = document.getElementById('catalogue-toggle');
+const subViews = document.querySelectorAll('.sub-view');
+
 const addItemForm = document.getElementById('add-item-form');
 const logoutBtn = document.getElementById('logout-btn');
 
@@ -75,9 +75,15 @@ function setupEventListeners() {
         });
     });
 
-    // Modals
-    addItemBtn.addEventListener('click', () => addItemModal.classList.add('active'));
-    closeModalBtn.addEventListener('click', () => addItemModal.classList.remove('active'));
+    // Catalogue Sub-view Toggle
+    if (catalogueToggle) {
+        catalogueToggle.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const subView = btn.getAttribute('data-subview');
+                switchSubView(subView);
+            });
+        });
+    }
 
     // Form Submission
     addItemForm.addEventListener('submit', handleAddItem);
@@ -102,6 +108,11 @@ function switchView(view) {
         section.classList.toggle('active', section.id === `view-${view}`);
     });
 
+    // Reset to list view when entering catalogue
+    if (view === 'catalogue') {
+        switchSubView('list');
+    }
+
     // Update Header Text
     const titles = {
         catalogue: ['Lab Catalogue', 'Manage and track laboratory equipment in real-time.'],
@@ -114,6 +125,18 @@ function switchView(view) {
     viewSubtitle.textContent = titles[view][1];
 
     renderCurrentView();
+}
+
+function switchSubView(subView) {
+    // Update Toggle Buttons
+    catalogueToggle.querySelectorAll('.toggle-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-subview') === subView);
+    });
+
+    // Update Sub-views
+    subViews.forEach(view => {
+        view.classList.toggle('active', view.id === `subview-${subView}`);
+    });
 }
 
 // Data Fetching
@@ -159,7 +182,13 @@ function renderCatalogue(data, container) {
             </div>
             <div class="card-content">
                 <h3 style="margin-bottom: 4px;">${item.name}</h3>
-                <p style="font-size: 0.8rem; height: 3em; overflow: hidden;">${item.description || 'No description available.'}</p>
+                <p style="font-size: 0.8rem; height: 3em; overflow: hidden; margin-bottom: 12px;">${item.description || 'No description available.'}</p>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 8px; color: var(--accent-light);">
+                    <span>Min Borrow</span>
+                    <span>${item.min_borrow_quantity || 1} units</span>
+                </div>
+
                 <div class="stock-indicator">
                     <span>Availability</span>
                     <span class="accent-text">${item.available_quantity} / ${item.total_quantity}</span>
@@ -205,6 +234,7 @@ async function handleAddItem(e) {
     try {
         const name = document.getElementById('comp-name').value;
         const total = parseInt(document.getElementById('comp-total').value);
+        const minBorrow = parseInt(document.getElementById('comp-min-borrow').value);
         const desc = document.getElementById('comp-desc').value;
         const file = document.getElementById('comp-image').files[0];
 
@@ -232,6 +262,7 @@ async function handleAddItem(e) {
             name,
             total_quantity: total,
             available_quantity: total,
+            min_borrow_quantity: minBorrow,
             description: desc,
             image_url: imageUrl
         }]);
@@ -239,7 +270,7 @@ async function handleAddItem(e) {
         if (error) throw error;
 
         addItemForm.reset();
-        addItemModal.classList.remove('active');
+        switchSubView('list');
         await refreshAllData();
 
     } catch (err) {

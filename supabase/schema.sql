@@ -11,6 +11,7 @@ create table if not exists public.inventory (
     total_quantity integer not null default 0,
     available_quantity integer not null default 0,
     image_url text,
+    min_borrow_quantity integer not null default 1,
     created_at timestamptz default now()
 );
 
