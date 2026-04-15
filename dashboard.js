@@ -324,27 +324,32 @@ window.handleRequestAction = async (id, status) => {
     }
 };
 
-// Deletion Logic
 window.handleDeleteItem = async (id, path) => {
     if (!confirm("Are you sure you want to delete this item? This will remove all associated records and files.")) return;
 
     try {
         // 1. Delete from Storage if path exists
-        if (path && !path.startsWith('http')) {
+        if (path && !path.startsWith('http') && path !== 'null') {
             const { error: storageErr } = await supabase.storage
                 .from('app-files')
                 .remove([path]);
             if (storageErr) console.warn("Storage deletion failed:", storageErr);
         }
 
-        // 2. Delete from Database
+        // 2. Delete related requests first (to satisfy FK constraint)
+        const { error: reqErr } = await supabase.from('requests')
+            .delete()
+            .eq('inventory_id', id);
+        if (reqErr) console.warn("Requests deletion failed:", reqErr);
+
+        // 3. Delete from Database
         const { error: dbErr } = await supabase.from('inventory')
             .delete()
             .eq('id', id);
         
         if (dbErr) throw dbErr;
 
-        // 3. Log the action
+        // 4. Log the action
         await supabase.from('audit_logs').insert([{
             table_name: 'inventory',
             record_id: id,
