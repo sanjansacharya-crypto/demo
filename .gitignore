@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Temp files created during setup
+apply.js
+apply_schema.js
+apply_storage.js
+make_payload.js
+payload.json
+response.txt
+storage_response.txt
+full_schema.sql
+
+# Logs
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
