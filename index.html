@@ -4,276 +4,156 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lab Inventory Management | Gen Z Vibes</title>
+  <title>Lab Inventory Management | Premium</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script>
-    // Script to prevent theme flash on load
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      document.documentElement.setAttribute('data-theme', 'light');
-    }
-  </script>
+  <link rel="stylesheet" href="login.css">
 </head>
 
 <body>
-  <div class="animated-background">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-  </div>
 
-  <div class="status-terminal">
-    <div class="terminal-header">
-      <span>System Status</span>
-      <span id="terminal-time">00:00:00</span>
-    </div>
-    <div id="terminal-logs" class="terminal-logs">
-      <div class="log-entry">Initializing network...</div>
-      <div class="log-entry">Encryption active...</div>
-    </div>
-  </div>
+  <div class="app-container" id="app-container">
 
-  <div class="infrastructure-layer">
-    <div class="perspective-grid"></div>
-    <!-- Lab SVGs with Parallax -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lab-svg lab-1">
-      <path d="M4.5 3h15" /><path d="M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3" /><path d="M6 14h12" />
-    </svg>
-    <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lab-svg lab-2">
-      <path d="M2 15c6.667-15 13.333-15 20 0" /><path d="M9 22c1.47-5 3.53-5 5 0" /><path d="M2 15c6.667 15 13.333 15 20 0" />
-    </svg>
-    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lab-svg lab-3">
-      <circle cx="12" cy="12" r="10" /><path d="M12 7v10" /><path d="M7 12h10" />
-    </svg>
-  </div>
+    <!-- Floating Tab to open panel -->
+    <button id="login-tab-btn" class="login-tab-btn glitch-target">Login</button>
 
-  <div class="marquee-container">
-    <div class="marquee-content">
-      <span>⚠️ LOW STOCK: PIPETTE TIPS</span>
-      <span>✅ UNIT-7: CALIBRATED</span>
-      <span>🌡️ FREEZER-B: -80°C STABLE</span>
-      <span>🧪 NEW BATCH: REAGENT-24</span>
-      <span>⚠️ LOW STOCK: PIPETTE TIPS</span>
-      <span>✅ UNIT-7: CALIBRATED</span>
-      <span>🌡️ FREEZER-B: -80°C STABLE</span>
-      <span>🧪 NEW BATCH: REAGENT-24</span>
-    </div>
-  </div>
+    <!-- LEFT COLUMN -->
+    <div class="col-left">
+      <div>
+        <div class="logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span class="glitch-target" style="z-index: 50;">LabDash</span>
+        </div>
+        <p class="subtitle">From preventive asset tracking<br>to complex inventory restorations,<br>a comprehensive
+          approach<br>to your lab workflow.</p>
+      </div>
 
-  <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
-    <svg id="bat-sleeping" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="bat-icon" style="display: none;">
-      <path d="M9.5 0 L10 2 M10.5 0 L11 2 M13 0 L13 2 M14.5 0 L14 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-      <path d="M10 2 C10 4 7 8 7 14 C7 17 9 19 12 20 C15 19 17 17 17 14 C17 8 14 4 14 2 Z" fill="currentColor" />
-      <path d="M7 14 C9 15 11 18 12 20 M17 14 C15 15 13 18 12 20" stroke="var(--bg-color)" stroke-width="1.2" fill="none" />
-      <path d="M10 19 L8 23 L11.5 20.5 Z M14 19 L16 23 L12.5 20.5 Z" fill="currentColor" />
-      <path d="M9.5 17.5 L11 17.5 M13 17.5 L14.5 17.5" stroke="var(--bg-color)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      <path d="M11.5 19.5 L11.5 20.5 M12.5 19.5 L12.5 20.5" stroke="var(--bg-color)" stroke-width="0.8" fill="none"/>
-    </svg>
-    <svg id="bat-awake" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="bat-icon">
-      <path d="M12 6 L10.5 4 L9 6.5 C6 5 2 7 0 10 C1 11.5 3.5 11.5 5 11 C5.5 13 7 14.5 8 14.5 C9 14.5 10 13.5 10 12 C10 15 11 18 12 20 C13 18 14 15 14 12 C14 13.5 15 14.5 16 14.5 C17 14.5 18.5 13 19 11 C20.5 11.5 23 11.5 24 10 C22 7 18 5 15 6.5 L13.5 4 L12 6 Z" fill="currentColor"/>
-      <circle cx="10.5" cy="8.5" r="1" fill="var(--bg-color)" />
-      <circle cx="13.5" cy="8.5" r="1" fill="var(--bg-color)" />
-      <path d="M11.5 10.5 L12 11 L12.5 10.5" stroke="var(--bg-color)" fill="none" stroke-width="0.5" stroke-linecap="round"/>
-    </svg>
-  </button>
+      <div class="hero-title">
+        <h1>Modern<br>Care for<br>Your Inventory</h1>
+      </div>
 
-<div class="sticker s1">🧪</div>
-<div class="sticker s2">🧬</div>
-<div class="sticker s3">🔬</div>
-
-  <main class="main-layout">
-    <div class="info-side">
-      <div class="info-content">
-        <h1>LAB INVENTORY<br>MANAGEMENT</h1>
-        <p>Optimize your research pipeline with real-time asset tracking, predictive restocking, and seamless laboratory coordination.</p>
-        <div class="stats-container">
-           <div class="stat-item">
-             <div class="stat-value">99.99%</div>
-             <div class="stat-label">Uptime SLA</div>
-           </div>
-           <div class="stat-item">
-             <div class="stat-value">< 10ms</div>
-             <div class="stat-label">Global Latency</div>
-           </div>
+      <div class="footer-stats">
+        <div>
+          <div class="stat-label">Best Management</div>
+          <div class="stat-value">2025</div>
+        </div>
+        <div>
+          <div class="stat-label">Global Access</div>
+          <div class="stat-value">17:17:03 GMT+1</div>
         </div>
       </div>
     </div>
 
-    <div class="container">
-    <!-- Login Form Container -->
-    <div id="login-container" class="glass-card active">
-      <div class="brand">
-        <div class="logo-icon">✦</div>
-        <h2>Welcome Back</h2>
-        <p>Please enter your details to sign in</p>
-      </div>
+    <!-- CENTER COLUMN -->
+    <div class="col-center">
+      <nav class="top-nav">
+        <a href="#" class="glitch-target">• Services</a>
+        <a href="#" class="glitch-target">• Equipment</a>
+        <a href="#" class="glitch-target">• Restock</a>
+        <a href="#" class="glitch-target">• Preventive Care</a>
+      </nav>
 
-      <form id="login-form">
-        <div class="input-group">
-          <label for="email">Email</label>
-          <div class="input-wrapper">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-            <input type="email" id="email" placeholder="Enter your email" required autocomplete="email">
+      <div class="hero-image-container">
+        <canvas id="particle-logo" width="800" height="800" style="transform: translateZ(0);"></canvas>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN (Drawer panel) -->
+    <div class="col-right">
+      <div class="right-inner">
+        <div class="right-header">
+          <button id="close-panel-btn" class="close-panel-btn glitch-target">✕</button>
+        </div>
+
+        <div class="auth-section">
+          <p class="auth-intro">Select from our suite of<br>highly skilled tracking tools<br>and experienced handlers.
+          </p>
+
+          <div class="forms-wrapper">
+            <!-- Login -->
+            <div id="login-container" class="auth-card active">
+              <form id="login-form">
+                <div class="input-group">
+                  <input type="email" id="email" placeholder="Email" required autocomplete="email">
+                </div>
+                <div class="input-group">
+                  <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
+                </div>
+                <div class="error-message" id="error-message">Invalid credentials. Please try again.</div>
+                <button type="submit" class="submit-btn glitch-target" id="submit-btn">
+                  <span class="btn-text">SIGN IN</span>
+                  <div class="spinner"></div>
+                </button>
+                <div class="divider"><span>OR</span></div>
+                <button type="button" class="social-btn google-login-btn glitch-target">
+                  CONTINUE WITH GOOGLE
+                </button>
+                <div class="toggle-text">
+                  New user? <span class="toggle-link glitch-target" id="show-signup">Create account</span>
+                </div>
+              </form>
+            </div>
+
+            <!-- Signup -->
+            <div id="signup-container" class="auth-card">
+              <form id="signup-form">
+                <div class="input-group">
+                  <input type="email" id="signup-email" placeholder="Email" required autocomplete="email">
+                </div>
+                <div class="input-group">
+                  <input type="password" id="signup-password" placeholder="Password" required
+                    autocomplete="new-password">
+                </div>
+                <div class="error-message" id="signup-error-message">Signup failed. Please try again.</div>
+                <button type="submit" class="submit-btn glitch-target" id="signup-submit-btn">
+                  <span class="btn-text">SIGN UP</span>
+                  <div class="spinner"></div>
+                </button>
+                <div class="divider"><span>OR</span></div>
+                <button type="button" class="social-btn google-login-btn glitch-target">
+                  CONTINUE WITH GOOGLE
+                </button>
+                <div class="toggle-text">
+                  Already registered? <span class="toggle-link glitch-target" id="show-login">Sign in</span>
+                </div>
+              </form>
+            </div>
+
+            <!-- Verification -->
+            <div id="verification-container" class="auth-card text-center">
+              <h2 style="font-size:20px;margin-bottom:10px;">Verify your email</h2>
+              <p id="verification-message" style="font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:20px;">We
+                sent a verification email.</p>
+              <button class="submit-btn mt-10 glitch-target" id="verify-login-btn">
+                <span class="btn-text">LOG IN</span>
+              </button>
+            </div>
+
+            <!-- Logged In Success -->
+            <div id="success-container" class="auth-card text-center">
+              <h2 style="font-size:20px;margin-bottom:10px;">Login Successful!</h2>
+              <p style="font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:20px;">Welcome to the dashboard.</p>
+              <button class="submit-btn mt-10 glitch-target" id="logout-btn">LOG OUT</button>
+            </div>
+
           </div>
         </div>
 
-        <div class="input-group">
-          <label for="password">Password</label>
-          <div class="input-wrapper">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+        <div class="footer-right">
+          <div>
+            <div class="stat-label">Advanced Analytics</div>
+            <div class="stat-value">Technologies</div>
           </div>
         </div>
-
-        <div class="error-message" id="error-message">
-          Invalid credentials. Please try again.
-        </div>
-
-        <button type="submit" class="submit-btn" id="submit-btn">
-          <span class="btn-text">Sign In</span>
-          <div class="spinner"></div>
-        </button>
-
-        <div class="divider">
-          <span>or</span>
-        </div>
-
-        <button type="button" class="social-btn google-login-btn">
-          <svg viewBox="0 0 24 24" class="social-icon">
-            <path fill="#4285F4"
-              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-            <path fill="#34A853"
-              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-            <path fill="#FBBC05"
-              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-            <path fill="#EA4335"
-              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-          </svg>
-          <span class="btn-text">Continue with Google</span>
-        </button>
-
-        <div class="toggle-text">
-          Don't have an account? <span class="toggle-link" id="show-signup">Sign Up</span>
-        </div>
-      </form>
-    </div>
-
-    <!-- Signup Form Container -->
-    <div id="signup-container" class="glass-card">
-      <div class="brand">
-        <div class="logo-icon">✦</div>
-        <h2>Create Account</h2>
-        <p>Join us to get started</p>
-      </div>
-
-      <form id="signup-form">
-        <div class="input-group">
-          <label for="signup-email">Email</label>
-          <div class="input-wrapper">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-            <input type="email" id="signup-email" placeholder="Enter your email" required autocomplete="email">
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label for="signup-password">Password</label>
-          <div class="input-wrapper">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            <input type="password" id="signup-password" placeholder="••••••••" required autocomplete="new-password">
-          </div>
-        </div>
-
-        <div class="error-message" id="signup-error-message">
-          Signup failed. Please try again.
-        </div>
-
-        <button type="submit" class="submit-btn" id="signup-submit-btn">
-          <span class="btn-text">Sign Up</span>
-          <div class="spinner"></div>
-        </button>
-
-        <div class="divider">
-          <span>or</span>
-        </div>
-
-        <button type="button" class="social-btn google-login-btn">
-          <svg viewBox="0 0 24 24" class="social-icon">
-            <path fill="#4285F4"
-              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-            <path fill="#34A853"
-              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-            <path fill="#FBBC05"
-              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-            <path fill="#EA4335"
-              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-          </svg>
-          <span class="btn-text">Continue with Google</span>
-        </button>
-
-        <div class="toggle-text">
-          Already have an account? <span class="toggle-link" id="show-login">Sign In</span>
-        </div>
-      </form>
-    </div>
-
-    <!-- Verification Container -->
-    <div id="verification-container" class="glass-card">
-      <div class="success-content">
-        <div class="success-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-            <polyline points="22,6 12,13 2,6"></polyline>
-          </svg>
-        </div>
-        <h2>Verify your email</h2>
-        <p id="verification-message">We have sent you a verification email to [user email]. Please verify it and log in
-        </p>
-        <button class="submit-btn" id="verify-login-btn" style="margin-top: 16px;">
-          <span class="btn-text">Log In</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Logged In Success Container -->
-    <div id="success-container" class="glass-card">
-      <div class="success-content">
-        <div class="success-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-          </svg>
-        </div>
-        <h2>Hi, I am in!</h2>
-        <p>Welcome to your dashboard. You have successfully authenticated.</p>
-        <button class="logout-btn" id="logout-btn">Log Out</button>
       </div>
     </div>
   </div>
-  </main>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
@@ -289,82 +169,146 @@
       appId: "1:662226193773:web:1f8303cf97c5c194c21e64"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Theme Toggle Logic
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const batSleeping = document.getElementById('bat-sleeping');
-    const batAwake = document.getElementById('bat-awake');
+    // Global Interactive Tracking
+    const mouse = { x: -1000, y: -1000, radius: 80 };
+    window.panelPushForce = 0;
 
-    function updateThemeIcons(theme) {
-      if (theme === 'dark') {
-        batAwake.style.display = 'block';
-        batSleeping.style.display = 'none';
-      } else {
-        batAwake.style.display = 'none';
-        batSleeping.style.display = 'block';
-      }
-    }
-
-    // Initial icon state
-    updateThemeIcons(document.documentElement.getAttribute('data-theme'));
-
-    themeToggleBtn.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      updateThemeIcons(newTheme);
+    document.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     });
 
-    // Parallax & Mock Logs Logic
-    const terminalLogs = document.getElementById('terminal-logs');
-    const terminalTime = document.getElementById('terminal-time');
-    
-    const mockLogs = [
-      "Reagent: Batch-24 authorized",
-      "Scanner: Unit-7 self-check OK",
-      "Inventory: Pipette stock low",
-      "Temperature: -80.4°C stable",
-      "Bio-safety: Level-2 active",
-      "Node: Lab-Alpha sync'd",
-      "Samples: 144 verified",
-      "Centrifuge: Maintenance scheduled"
-    ];
-
-    function addLog() {
-      const log = mockLogs[Math.floor(Math.random() * mockLogs.length)];
-      const entry = document.createElement('div');
-      entry.className = 'log-entry';
-      entry.textContent = log;
-      terminalLogs.appendChild(entry);
-      if (terminalLogs.children.length > 4) {
-        terminalLogs.removeChild(terminalLogs.children[0]);
-      }
-    }
-
-    setInterval(addLog, 4000);
-
-    function updateTime() {
-      const now = new Date();
-      terminalTime.textContent = now.toTimeString().split(' ')[0];
-    }
-    setInterval(updateTime, 1000);
-    updateTime();
-
-    // Mouse Parallax
-    window.addEventListener('mousemove', (e) => {
-      const x = (e.clientX / window.innerWidth) - 0.5;
-      const y = (e.clientY / window.innerHeight) - 0.5;
+    // Logo Particle Disturbance System
+    window.addEventListener('load', () => {
+      const canvas = document.getElementById('particle-logo');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
       
-      document.documentElement.style.setProperty('--mouse-x', x);
-      document.documentElement.style.setProperty('--mouse-y', y);
+      const img = new Image();
+      img.src = "reva-logo.png";
+      
+      let particlesArray = [];
+      let canvasRect = canvas.getBoundingClientRect();
+      
+      const updateRect = () => canvasRect = canvas.getBoundingClientRect();
+      window.addEventListener('resize', updateRect);
+      window.addEventListener('scroll', updateRect);
+      
+      img.onload = () => {
+        const cWidth = canvas.width;
+        const cHeight = canvas.height;
+        const logoSize = 400; // Visual logo block scale 
+        
+        // Draw the logo deeply centered inside the 800x800 arena
+        const offsetX = (cWidth - logoSize) / 2;
+        const offsetY = (cHeight - logoSize) / 2;
+
+        ctx.drawImage(img, offsetX, offsetY, logoSize, logoSize);
+        const data = ctx.getImageData(0, 0, cWidth, cHeight).data;
+        ctx.clearRect(0,0,cWidth,cHeight);
+        
+        class Particle {
+          constructor(x, y, color, stepSize) {
+            this.x = x + (Math.random() - 0.5) * 100;
+            this.y = y + (Math.random() - 0.5) * 100;
+            this.originX = x;
+            this.originY = y;
+            this.color = color;
+            this.size = stepSize * 0.8;
+            this.vx = 0;
+            this.vy = 0;
+            this.ease = 0.08; 
+            this.friction = 0.85;
+          }
+          update() {
+            // Magnetic pull back to original position
+            this.vx += (this.originX - this.x) * this.ease;
+            this.vy += (this.originY - this.y) * this.ease;
+            
+            // Mouse disturbance
+            const dx = mouse.x - (canvasRect.left + this.x);
+            const dy = mouse.y - (canvasRect.top + this.y);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < mouse.radius) {
+              const angle = Math.atan2(dy, dx);
+              const force = (mouse.radius - distance) / mouse.radius;
+              this.vx -= Math.cos(angle) * force * 15;
+              this.vy -= Math.sin(angle) * force * 15;
+            }
+            
+            // UI Push Force logic (sliding out the right panel pushes the image blocks sideways)
+            if (window.panelPushForce) {
+               // Softer, smoother push wave
+               this.vx += window.panelPushForce * (0.2 + Math.random() * 0.15);
+            }
+            
+            this.vx *= this.friction;
+            this.vy *= this.friction;
+            this.x += this.vx;
+            this.y += this.vy;
+          }
+          draw() {
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, this.size, this.size);
+          }
+        }
+        
+        // Setup Grid over full canvas
+        const step = 5;
+        for (let y = 0; y < cHeight; y += step) { 
+          for (let x = 0; x < cWidth; x += step) {
+            let index = (y * cWidth + x) * 4;
+            let a = data[index + 3];
+            if (a > 10) { // If pixel is highly visible
+              let r = data[index];
+              let g = data[index + 1];
+              let b = data[index + 2];
+              particlesArray.push(new Particle(x, y, `rgba(${r},${g},${b},${a/255})`, step));
+            }
+          }
+        }
+        
+        function animate() {
+           // Apply decay to UI physics push
+          if (Math.abs(window.panelPushForce) > 0.05) {
+             window.panelPushForce *= 0.95; // Slower decay for smoother motion
+          } else {
+             window.panelPushForce = 0;
+          }
+          
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+            particlesArray[i].draw();
+          }
+          requestAnimationFrame(animate);
+        }
+        animate();
+      };
     });
 
     document.addEventListener('DOMContentLoaded', () => {
+
+      // Panel Toggle Logic
+      const appContainer = document.getElementById('app-container');
+      const loginTabBtn = document.getElementById('login-tab-btn');
+      const closePanelBtn = document.getElementById('close-panel-btn');
+
+      loginTabBtn.addEventListener('click', () => {
+        appContainer.classList.add('panel-open');
+        window.panelPushForce = -20; // Gentle physics push to the left from the advancing tab
+      });
+
+      closePanelBtn.addEventListener('click', () => {
+        appContainer.classList.remove('panel-open');
+        window.panelPushForce = 0; // The tab retracts, so there's no pressure on the logo
+      });
+
+      // Firebase Elements
       const loginForm = document.getElementById('login-form');
       const submitBtn = document.getElementById('submit-btn');
       const errorMessage = document.getElementById('error-message');
@@ -425,7 +369,7 @@
           signupSubmitBtn.classList.remove('loading');
           signupSubmitBtn.disabled = false;
 
-          verificationMessage.textContent = `We have sent you a verification email to ${email}. Please verify it and log in`;
+          verificationMessage.textContent = `We have sent you a verification email to ${email}. Please verify it and log in.`;
 
           signupContainer.classList.remove('active');
 
@@ -446,10 +390,7 @@
       loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Hide previous errors
         errorMessage.style.display = 'none';
-
-        // Add loading state
         submitBtn.classList.add('loading');
         submitBtn.disabled = true;
 
@@ -457,17 +398,13 @@
         const password = document.getElementById('password').value;
 
         try {
-          // Attempt to sign in with Firebase
           const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
           if (!userCredential.user.emailVerified) {
             await signOut(auth);
-
             submitBtn.classList.remove('loading');
             submitBtn.disabled = false;
-
-            verificationMessage.textContent = `We have sent you a verification email to ${email}. Please verify it and log in`;
-
+            verificationMessage.textContent = `We have sent you a verification email to ${email}. Please verify it and log in.`;
             loginContainer.classList.remove('active');
             setTimeout(() => {
               verificationContainer.classList.add('active');
@@ -475,24 +412,17 @@
             return;
           }
 
-          // Remove loading state
           submitBtn.classList.remove('loading');
           submitBtn.disabled = false;
-
-          // Success - switch views
           loginContainer.classList.remove('active');
 
-          // Small delay for smooth transition
           setTimeout(() => {
             window.location.href = 'dashboard.html';
           }, 800);
 
         } catch (error) {
-          // Remove loading state
           submitBtn.classList.remove('loading');
           submitBtn.disabled = false;
-
-          // Show error message from Firebase
           errorMessage.textContent = error.message.replace('Firebase: ', '') || 'Invalid credentials. Please try again.';
           errorMessage.style.display = 'block';
         }
@@ -501,15 +431,9 @@
       // Handle logout
       logoutBtn.addEventListener('click', async () => {
         try {
-          // Sign out from Firebase
           await signOut(auth);
-
-          // Switch back to login view
           successContainer.classList.remove('active');
-
-          // Clear form
           loginForm.reset();
-
           setTimeout(() => {
             loginContainer.classList.add('active');
           }, 300);
@@ -538,54 +462,6 @@
 
       googleLoginBtns.forEach(btn => btn.addEventListener('click', handleGoogleLogin));
     });
-
-    // Detect if scrolled down beyond limit to reload
-    let accumulatedOverscroll = 0;
-
-    // For Desktop (Mouse Wheel)
-    window.addEventListener('wheel', (e) => {
-      // Check if we are at the bottom of the page
-      const isAtBottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight;
-
-      // e.deltaY > 0 means scrolling downwards
-      if (isAtBottom && e.deltaY > 0) {
-        accumulatedOverscroll += e.deltaY;
-        // If we overscroll by 150px, reload
-        if (accumulatedOverscroll > 150) {
-          location.reload();
-        }
-      } else {
-        accumulatedOverscroll = 0;
-      }
-    }, { passive: true });
-
-    // For Mobile (Touch Drag)
-    let touchStartY = 0;
-    window.addEventListener('touchstart', (e) => {
-      touchStartY = e.touches[0].clientY;
-    }, { passive: true });
-
-    window.addEventListener('touchmove', (e) => {
-      const currentY = e.touches[0].clientY;
-      const deltaY = touchStartY - currentY; // positive delta implies swiping up / scrolling down
-
-      const isAtBottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight;
-
-      if (isAtBottom && deltaY > 0) {
-        accumulatedOverscroll += deltaY;
-        touchStartY = currentY;
-        if (accumulatedOverscroll > 150) {
-          location.reload();
-        }
-      } else {
-        accumulatedOverscroll = 0;
-      }
-    }, { passive: true });
-
-    window.addEventListener('touchend', () => {
-      accumulatedOverscroll = 0;
-    });
-
   </script>
 </body>
 

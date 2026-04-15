@@ -1,0 +1,426 @@
+:root {
+  --bg-gradient: linear-gradient(135deg, #371106 0%, #0d0401 100%);
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --border: rgba(255, 255, 255, 0.15);
+  --font-family: 'Outfit', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
+body {
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow: hidden; 
+}
+
+/* 3-Column Layout */
+.app-container {
+  display: grid;
+  /* Left, Center, Right (starts at 0 width) */
+  grid-template-columns: 4fr 5fr 0vw;
+  height: 100vh;
+  width: 100%;
+  transition: grid-template-columns 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-container.panel-open {
+  /* Bisect exactly 1/4 (25vw) on the right */
+  grid-template-columns: 4fr 5fr 25vw;
+}
+
+/* --- LEFT COLUMN --- */
+.col-left {
+  padding: 50px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  margin-top: 40px;
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+  max-width: 300px;
+}
+
+.hero-title h1 {
+  font-size: 72px;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.hero-title h1 span {
+  opacity: 0.6;
+}
+
+.footer-stats {
+  display: flex;
+  gap: 60px;
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+.stat-value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* --- CENTER COLUMN --- */
+.col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.top-nav {
+  margin-top: 50px;
+  display: flex;
+  gap: 30px;
+  z-index: 10;
+}
+
+.top-nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.hero-image-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* Let clicks pass through empty space */
+}
+
+#particle-logo {
+  pointer-events: auto; /* Catch mouse for physics */
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  /* Seamlessly feather the hard edges into transparency */
+  -webkit-mask-image: radial-gradient(circle closest-side, black 60%, transparent 100%);
+  mask-image: radial-gradient(circle closest-side, black 60%, transparent 100%);
+  /* Screen out the dark background of the image to blend it natively into the UI */
+  mix-blend-mode: screen;
+  transition: transform 0.1s cubic-bezier(0.1, 0.8, 0.2, 1);
+}
+
+/* Floating Login Tab Button */
+.login-tab-btn {
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 50;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 1px;
+}
+
+.login-tab-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.app-container.panel-open .login-tab-btn {
+  opacity: 0;
+  transform: translateX(20px);
+  pointer-events: none;
+}
+
+/* --- RIGHT COLUMN (SLIDING DRAWER) --- */
+.col-right {
+  border-left: 1px solid var(--border);
+  background: rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+  position: relative;
+}
+
+.right-inner {
+  width: 25vw; /* Keeps contents from squishing dynamically during grid transition */
+  min-width: 320px;
+  height: 100vh;
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.app-container.panel-open .right-inner {
+  opacity: 1;
+  transition-delay: 0.2s; /* wait for panel to enter before showing content */
+}
+
+.right-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.close-panel-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.close-panel-btn:hover {
+  color: var(--text-main);
+}
+
+.auth-section {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-intro {
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 40px;
+}
+
+.forms-wrapper {
+  position: relative;
+  min-height: 350px;
+}
+
+.auth-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.auth-card.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+  color: var(--text-main);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
+
+input:focus {
+  border-bottom-color: var(--text-main);
+}
+
+.submit-btn {
+  width: 100%;
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  position: relative;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.submit-btn:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+.submit-btn.loading .btn-text { opacity: 0; }
+.submit-btn.loading .spinner { display: block; }
+
+.spinner {
+  display: none;
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 16px; height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid rgba(255,255,255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+.divider span {
+  color: var(--text-muted);
+  font-size: 12px;
+  background: transparent;
+  padding: 0 10px;
+}
+
+.social-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.social-btn:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.toggle-text {
+  text-align: left;
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.toggle-link {
+  color: var(--text-main);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.error-message {
+  color: #ffbba1;
+  font-size: 13px;
+  margin-bottom: 10px;
+  display: none;
+}
+
+.mt-10 { margin-top: 10px; }
+.text-center { text-align: center; }
+
+/* -----------------------------
+   GLITCH ANIMATION HOVER EFECT
+--------------------------------*/
+.glitch-target {
+  cursor: pointer;
+  display: inline-block;
+  transition: color 0.1s;
+}
+
+.glitch-target:hover {
+  color: #fff;
+  /* Ultra fast color flash, no shaking */
+  animation: txt-glitch 0.15s linear both;
+}
+
+@keyframes txt-glitch {
+  0% { text-shadow: 0 0 transparent; }
+  20% { text-shadow: 3px 0 0 rgba(0,255,255,0.8), -3px 0 0 rgba(255,0,255,0.8); }
+  50% { text-shadow: -3px 0 0 rgba(0,255,255,0.8), 3px 0 0 rgba(255,0,255,0.8); }
+  80% { text-shadow: 2px 0 0 rgba(0,255,255,0.8), -2px 0 0 rgba(255,0,255,0.8); }
+  100% { text-shadow: 0 0 transparent; }
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+  .app-container {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: auto;
+  }
+  .app-container.panel-open {
+    grid-template-columns: 1fr;
+  }
+  .login-tab-btn {
+    top: 20px;
+    right: 20px;
+  }
+  .col-right {
+    position: fixed;
+    top: 0; right: -100vw;
+    width: 100vw; height: 100vh;
+    border-left: none;
+    background: rgba(0,0,0,0.9);
+    z-index: 100;
+    transition: right 0.4s ease;
+  }
+  .app-container.panel-open .col-right {
+    right: 0;
+  }
+  .right-inner {
+    width: 100vw;
+  }
+  .hero-image-container {
+    position: relative;
+    top: 0; left: 0; transform: none;
+    margin: 40px auto;
+  }
+  body { overflow: auto; }
+}
