@@ -9,11 +9,60 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="login.css">
+  <style>
+    body { transition: background-color 0.8s ease; }
+    body.student-mode { background-color: #0f0a14; }
+    .student-mode .hero-title h1 { color: #ba8cff; transition: color 0.5s ease; }
+    .student-mode .login-tab-btn { background: rgba(186, 140, 255, 0.1); border-color: #ba8cff; color: #ba8cff; transition: all 0.5s ease; }
+
+
+    .model-container {
+        position: fixed;
+        top: 25px;
+        right: 150px;
+        width: 75px;
+        height: 75px;
+        z-index: 100;
+        cursor: pointer;
+        perspective: 1000px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.5s ease;
+    }
+    
+    .model-3d {
+        position: absolute;
+        top: 5%; left: 5%;
+        width: 90%;
+        height: 90%;
+        object-fit: contain;
+        filter: drop-shadow(0px 8px 6px rgba(0,0,0,0.5));
+        transition: opacity 0.8s ease, transform 0.8s ease, filter 0.3s ease;
+        transform-origin: center center;
+    }
+    
+    #model-puppy { opacity: 1; transform: scale(1); pointer-events: auto; }
+    #model-dog { opacity: 0; transform: scale(0.9); pointer-events: none; }
+    
+    .student-mode #model-puppy { opacity: 0; transform: scale(0.9); pointer-events: none; }
+    .student-mode #model-dog { opacity: 1; transform: scale(1); pointer-events: auto; }
+    
+    .model-container:hover .model-3d {
+        filter: drop-shadow(0px 12px 10px rgba(0,0,0,0.7));
+    }
+  </style>
 </head>
 
 <body>
 
   <div class="app-container" id="app-container">
+
+    <!-- 3D Role Toggle -->
+    <div class="model-container" id="model-toggle-btn" title="Switch to Student Tab">
+        <img src="3d-dog.png" class="model-3d" id="model-puppy" alt="Faculty Big Dog">
+        <img src="3d-puppy.png" class="model-3d" id="model-dog" alt="Student Puppy">
+    </div>
 
     <!-- Floating Tab to open panel -->
     <button id="login-tab-btn" class="login-tab-btn glitch-target">Login</button>
@@ -298,6 +347,26 @@
       const loginTabBtn = document.getElementById('login-tab-btn');
       const closePanelBtn = document.getElementById('close-panel-btn');
 
+      // 3D Role Toggle Logic
+      const modelToggleBtn = document.getElementById('model-toggle-btn');
+      const modelPuppy = document.getElementById('model-puppy');
+      const modelDog = document.getElementById('model-dog');
+      const mainTitle = document.querySelector('.hero-title h1');
+      let isStudent = false;
+
+      modelToggleBtn.addEventListener('click', () => {
+        isStudent = !isStudent;
+        document.body.classList.toggle('student-mode', isStudent);
+        
+        if (isStudent) {
+            mainTitle.innerHTML = 'Student<br>Hardware<br>Catalogue';
+            modelToggleBtn.title = "Switch to Faculty Tab";
+        } else {
+            mainTitle.innerHTML = 'Modern<br>Care for<br>Your Inventory';
+            modelToggleBtn.title = "Switch to Student Tab";
+        }
+      });
+
       loginTabBtn.addEventListener('click', () => {
         appContainer.classList.add('panel-open');
         window.panelPushForce = -20; // Gentle physics push to the left from the advancing tab
@@ -417,7 +486,7 @@
           loginContainer.classList.remove('active');
 
           setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = isStudent ? 'student-dashboard.html' : 'dashboard.html';
           }, 800);
 
         } catch (error) {
@@ -452,7 +521,7 @@
           loginContainer.classList.remove('active');
           signupContainer.classList.remove('active');
           setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = isStudent ? 'student-dashboard.html' : 'dashboard.html';
           }, 800);
         } catch (error) {
           errorMessage.textContent = error.message.replace('Firebase: ', '') || 'Google sign-in failed.';
